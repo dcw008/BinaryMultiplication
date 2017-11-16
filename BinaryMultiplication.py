@@ -1,7 +1,8 @@
 import math
 #performs ks multiplication given two lists representing two binary numbers
-def ksMult(x, y):
+def ksMult(x, y, length):
     if len(x) == 1 and len(y) == 1: return x[0] * y[0]
+
 
     x = pad_zero(x, y)[0]
     y = pad_zero(x, y)[1]
@@ -17,22 +18,50 @@ def ksMult(x, y):
     y1 = pad_zero(yl, yr)[0]
     yr = pad_zero(yl, yr)[1]
 
-    P1 = ksMult(xl, yl)
-    P2 = ksMult(xr, yr)
+    P1 = ksMult(xl, yl, length)
+    P2 = ksMult(xr, yr, length)
     sumX = add(xl, xr)
     sumY = add(yl, yr)
 
 
-    P3 = ksMult(sumX, sumY)
+    P3 = ksMult(sumX, sumY, length)
 
     n = len(x)
+    if(n == length):
+        n -= 1
     total = P1 * 2**n + (P3 - P1 - P2) * 2**(n//2) + P2
     return total
 
 
 #performs grade school multipliaction given two lists representing binary numbers.
 def gsMult(x, y):
-    return 0
+    product = [0 for bit in x]
+    y.reverse()
+    num_appends = 0
+
+    for bit in y:
+        if(bit == 1):
+            result = x
+        else:
+            result = [0 for bit in x]
+
+        for i in range(0, num_appends):
+            result.append(0)
+
+
+        result = pad_zero(result, product)[0]
+        product = pad_zero(result, product)[1]
+
+        print(result)
+        print(product)
+
+        product = add(result, product)
+        print(product)
+        num_appends += 1
+
+    print(product)
+
+
 
 #add two binary numbers represented as a list
 def add(x, y):
@@ -45,6 +74,7 @@ def add(x, y):
     y = int(y, 2)
 
     sum = x+y
+
     return [int(x) for x in list("{0:b}".format(sum))]
 
 #takes an integer and converts to a binary encoded list
@@ -61,9 +91,13 @@ def pad_zero(list_x, list_y):
 
     return (list_x, list_y)
 
-# print(ksMult(bin_list(6), bin_list(5))
-print(ksMult(bin_list(3), bin_list(4)))
+print(ksMult(bin_list(10), bin_list(10), len(bin_list(4))))
 # print(ksMult([1,0,1,1,0,0,1,0],[0,1,1,0,0,0,1,1]))$
 # print(len([1]))
 
-print(add([0,1],[1,0]))
+# print(add([0,1],[1,0]))
+
+# print(gsMult(bin_list(5), bin_list(6)))
+# gsMult(bin_list(90), bin_list(6))
+
+
