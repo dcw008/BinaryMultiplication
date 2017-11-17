@@ -1,34 +1,34 @@
 import math
 #performs ks multiplication given two lists representing two binary numbers
-def ksMult(x, y, length):
+def ksMult(x, y, layer):
     if len(x) == 1 and len(y) == 1: return x[0] * y[0]
 
     x = pad_zero(x, y)[0]
     y = pad_zero(x, y)[1]
-    xl = x[:math.ceil(len(x)/2)] #left half
-    xr = x[math.ceil(len(x)/2):] #right half
+    xl = x[:len(x)//2] #left half
+    xr = x[len(x)//2:] #right half
 
     x1 = pad_zero(xl, xr)[0]
     xr = pad_zero(xl, xr)[1]
 
-    yl = y[:math.ceil(len(y)/2)] #left half
-    yr = y[math.ceil(len(y)/2):] #right half
+    yl = y[:len(y)//2] #left half
+    yr = y[len(y)//2:] #right half
 
     y1 = pad_zero(yl, yr)[0]
     yr = pad_zero(yl, yr)[1]
 
-    P1 = ksMult(xl, yl, length)
-    P2 = ksMult(xr, yr, length)
+    P1 = ksMult(xl, yl, layer+1)
+    P2 = ksMult(xr, yr, layer+1)
     sumX = add(xl, xr)
     sumY = add(yl, yr)
 
 
-    P3 = ksMult(sumX, sumY, length)
+    P3 = ksMult(sumX, sumY, layer+1)
 
     n = len(x)
-    if(n == length and n%2 != 0):
-        n -= 1
-    total = P1 * 2**n + (P3 - P1 - P2) * 2**(n//2) + P2
+    # if(layer == 0):
+    #     n -= 1
+    total = P1 * 2**(2*math.ceil(n/2)) + (P3 - P1 - P2) * 2**math.ceil(n/2) + P2
 
     return total
 
@@ -88,7 +88,8 @@ def pad_zero(list_x, list_y):
 
     return (list_x, list_y)
 
-print(ksMult(bin_list(10), bin_list(10), len(bin_list(10))))
+print(ksMult(bin_list(2**15), bin_list(2**16), 0))
+# print(ksMult(bin_list(10), bin_list(10), 0))
 # print(ksMult([1,0,1,1,0,0,1,0],[0,1,1,0,0,0,1,1]))$
 # print(len([1]))
 
