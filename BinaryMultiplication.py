@@ -35,15 +35,14 @@ def ksMult(x, y, length):
 
 #performs grade school multipliaction given two lists representing binary numbers.
 def gsMult(x, y):
-    product = [0 for bit in x]
+    product = [0]
     y.reverse()
     num_appends = 0
-
     for bit in y:
         if(bit == 1):
-            result = x
+            result = x[:]
         else:
-            result = [0 for bit in x]
+            result = [0]
 
         for i in range(0, num_appends):
             result.append(0)
@@ -60,6 +59,7 @@ def gsMult(x, y):
         num_appends += 1
 
     print(product)
+    print(int(''.join([str(n) for n in product]), 2))
 
 
 
@@ -91,13 +91,13 @@ def pad_zero(list_x, list_y):
 
     return (list_x, list_y)
 
-print(ksMult(bin_list(10), bin_list(10), len(bin_list(4))))
+# print(ksMult(bin_list(10), bin_list(10), len(bin_list(4))))
 # print(ksMult([1,0,1,1,0,0,1,0],[0,1,1,0,0,0,1,1]))$
 # print(len([1]))
 
 # print(add([0,1],[1,0]))
 
 # print(gsMult(bin_list(5), bin_list(6)))
-# gsMult(bin_list(90), bin_list(6))
+gsMult(bin_list(9), bin_list(9))
 
 
