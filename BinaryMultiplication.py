@@ -101,11 +101,13 @@ print(gsMult(bin_list(2**32), bin_list(2**32)))
 #     return [i for i in range(2 ** n) if i >= 2 ** (n - 1)]
 
 
-bits = [(i + 1) for i in range(100)]
+bits = [(i + 1) for i in range(800)]
 print(bits)
 
 import timeit
+import time
 import random
+
 
 runtime_ks = []
 runtime_gs = []
@@ -114,20 +116,22 @@ for i in bits:
     x = random.randint(2**(i-1), 2**i)
     y = random.randint(2**(i-1), 2**i)
 
-    start = timeit.default_timer()
+    start = time.time()
     ksMult(bin_list(x), bin_list(y))
-    stop = timeit.default_timer()
+    stop = time.time()
+    print(stop-start)
     runtime_ks.append(stop-start)
 
-    start2 = timeit.default_timer()
+    start2 = time.time()
     gsMult(bin_list(x), bin_list(y))
-    stop2 = timeit.default_timer()
+    stop2 = time.time()
     runtime_gs.append(stop2-start2)
 
 import matplotlib.pyplot as plt
 plt.plot([i for i in bits], [i for i in runtime_ks], 'ro')
 plt.plot([i for i in bits], [i for i in runtime_gs],'bo')
-plt.legend(['runtime_gs', 'runtime_ks'], loc='upper left')
+# plt.loglog(2,2)
+# plt.legend(['runtime_gs', 'runtime_ks'], loc='upper left')
 plt.xlabel('number of bits')
 plt.ylabel('runtime for performing multiplication')
 plt.show()
