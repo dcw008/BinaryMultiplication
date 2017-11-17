@@ -3,7 +3,6 @@ import math
 def ksMult(x, y, length):
     if len(x) == 1 and len(y) == 1: return x[0] * y[0]
 
-
     x = pad_zero(x, y)[0]
     y = pad_zero(x, y)[1]
     xl = x[:math.ceil(len(x)/2)] #left half
@@ -27,9 +26,10 @@ def ksMult(x, y, length):
     P3 = ksMult(sumX, sumY, length)
 
     n = len(x)
-    if(n == length):
+    if(n == length and n%2 != 0):
         n -= 1
     total = P1 * 2**n + (P3 - P1 - P2) * 2**(n//2) + P2
+
     return total
 
 
@@ -51,15 +51,12 @@ def gsMult(x, y):
         result = pad_zero(result, product)[0]
         product = pad_zero(result, product)[1]
 
-        print(result)
-        print(product)
-
         product = add(result, product)
-        print(product)
         num_appends += 1
 
-    print(product)
+    # print(product)
     print(int(''.join([str(n) for n in product]), 2))
+    return int(''.join([str(n) for n in product]), 2)
 
 
 
@@ -91,13 +88,13 @@ def pad_zero(list_x, list_y):
 
     return (list_x, list_y)
 
-# print(ksMult(bin_list(10), bin_list(10), len(bin_list(4))))
+print(ksMult(bin_list(10), bin_list(10), len(bin_list(10))))
 # print(ksMult([1,0,1,1,0,0,1,0],[0,1,1,0,0,0,1,1]))$
 # print(len([1]))
 
 # print(add([0,1],[1,0]))
 
 # print(gsMult(bin_list(5), bin_list(6)))
-gsMult(bin_list(9), bin_list(9))
+# gsMult(bin_list(2**15), bin_list(2**16))
 
 
