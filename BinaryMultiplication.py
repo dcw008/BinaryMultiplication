@@ -1,6 +1,7 @@
 import math
+import random
 #performs ks multiplication given two lists representing two binary numbers
-def ksMult(x, y, layer):
+def ksMult(x, y):
     if len(x) == 1 and len(y) == 1: return x[0] * y[0]
 
     x = pad_zero(x, y)[0]
@@ -17,18 +18,16 @@ def ksMult(x, y, layer):
     y1 = pad_zero(yl, yr)[0]
     yr = pad_zero(yl, yr)[1]
 
-    P1 = ksMult(xl, yl, layer+1)
-    P2 = ksMult(xr, yr, layer+1)
+    P1 = ksMult(xl, yl)
+    P2 = ksMult(xr, yr)
     sumX = add(xl, xr)
     sumY = add(yl, yr)
 
 
-    P3 = ksMult(sumX, sumY, layer+1)
+    P3 = ksMult(sumX, sumY)
 
     n = len(x)
-    # if(layer == 0):
-    #     n -= 1
-    total = P1 * 2**(2*math.ceil(n/2)) + (P3 - P1 - P2) * 2**math.ceil(n/2) + P2
+    total = P1 * (1 << (2*math.ceil(n/2))) + (P3 - P1 - P2) * (1 << math.ceil(n/2)) + P2
 
     return total
 
@@ -88,14 +87,47 @@ def pad_zero(list_x, list_y):
 
     return (list_x, list_y)
 
-print(ksMult(bin_list(2**15), bin_list(2**16), 0))
 # print(ksMult(bin_list(10), bin_list(10), 0))
 # print(ksMult([1,0,1,1,0,0,1,0],[0,1,1,0,0,0,1,1]))$
 # print(len([1]))
 
 # print(add([0,1],[1,0]))
 
-# print(gsMult(bin_list(5), bin_list(6)))
+print(gsMult(bin_list(2**32), bin_list(2**32)))
 # gsMult(bin_list(2**15), bin_list(2**16))
 
 
+# def generateNumbers(n):
+#     return [i for i in range(2 ** n) if i >= 2 ** (n - 1)]
+
+
+bits = [(i + 1) for i in range(100)]
+print(bits)
+
+import timeit
+import random
+
+runtime_ks = []
+runtime_gs = []
+
+for i in bits:
+    x = random.randint(2**(i-1), 2**i)
+    y = random.randint(2**(i-1), 2**i)
+
+    start = timeit.default_timer()
+    ksMult(bin_list(x), bin_list(y))
+    stop = timeit.default_timer()
+    runtime_ks.append(stop-start)
+
+    start2 = timeit.default_timer()
+    gsMult(bin_list(x), bin_list(y))
+    stop2 = timeit.default_timer()
+    runtime_gs.append(stop2-start2)
+
+import matplotlib.pyplot as plt
+plt.plot([i for i in bits], [i for i in runtime_ks], 'ro')
+plt.plot([i for i in bits], [i for i in runtime_gs],'bo')
+plt.legend(['runtime_gs', 'runtime_ks'], loc='upper left')
+plt.xlabel('number of bits')
+plt.ylabel('runtime for performing multiplication')
+plt.show()
